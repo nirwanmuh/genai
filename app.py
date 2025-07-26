@@ -1,27 +1,19 @@
 import streamlit as st
-from google import genai
-from google.genai.client import Client
+import google.generativeai as genai
 
-client = Client(api_key="AIzaSyB3IiCtP8-BDL72BtPaXBSwsPwdnRZjttY")
-client = genai.Client()
-st.set_page_config(page_title="Text Reverser", layout="centered")
+# Konfigurasi API Key Gemini
+genai.configure(api_key="AIzaSyB3IiCtP8-BDL72BtPaXBSwsPwdnRZjttY")
 
-st.title("🔄 Aplikasi Pembalik Teks")
+# Streamlit UI
+st.title("💬 Gemini Text Generator")
 
-# Input teks dari pengguna
-user_input = st.text_input("Masukkan teks di sini:")
+user_input = st.text_input("Masukkan pertanyaan atau perintah:")
 
-# Tombol untuk proses
-if st.button("Proses"):
+if st.button("Kirim"):
     if user_input.strip() == "":
-        st.warning("Silakan masukkan teks terlebih dahulu.")
+        st.warning("Tolong masukkan teks.")
     else:
-        # Proses: balikkan teks
-        response = client.models.generate_content(
-        model="gemini-2.5-flash",
-        contents=user_input
-        )
-
-        # Output hasil
-        st.success("✅ Teks yang dibalik:")
-        st.code(response.text)
+        model = genai.GenerativeModel("gemini-2.5-flash")
+        response = model.generate_content(user_input)
+        st.subheader("Jawaban:")
+        st.write(response.text)
