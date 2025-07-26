@@ -30,7 +30,7 @@ def chat_bubble(role, text):
 
     st.markdown(f"""
     <div style='display: flex; justify-content: {align}; margin-bottom: 10px;'>
-        <div style='background-color: {bg_color}; padding: 10px 15px; border-radius: 15px; max-width: 80%; position: relative;'>
+        <div style='background-color: {bg_color}; color: black; padding: 10px 15px; border-radius: 15px; max-width: 80%; position: relative;'>
             <strong>{sender}</strong><br>
             <div id='{bubble_id}' style='white-space: pre-wrap; margin-top: 5px;'>{text}</div>
             <button onclick="navigator.clipboard.writeText(document.getElementById('{bubble_id}').innerText)" style='margin-top:5px; font-size:12px;'>📋 Copy</button>
