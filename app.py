@@ -12,21 +12,39 @@ API_KEY = os.getenv("AIzaSyB3IiCtP8-BDL72BtPaXBSwsPwdnRZjttY")
 genai.configure(api_key=API_KEY)
 
 # Konfigurasi UI
-st.set_page_config(page_title="Chat dengan Gemini", layout="centered")
-st.title("🤖 Nirwan-GPT")
+st.set_page_config(page_title="Gemini Chat", layout="centered")
+st.title("💬 Gemini Chatbot")
 
-# Input dari user
-user_input = st.text_input("Tulis pertanyaan atau perintah kamu:")
+# Inisialisasi session state untuk menyimpan history
+if "messages" not in st.session_state:
+    st.session_state.messages = []
 
-if st.button("Kirim"):
-    if not user_input.strip():
-        st.warning("Silakan masukkan teks.")
+# Tampilkan history percakapan
+for msg in st.session_state.messages:
+    if msg["role"] == "user":
+        with st.chat_message("👤 Kamu"):
+            st.markdown(msg["content"])
     else:
-        try:
-            with st.spinner("Nirwan sedang mengetik... 🤖💭"):
+        with st.chat_message("🤖 Gemini"):
+            st.markdown(msg["content"])
+
+# Input pengguna
+user_input = st.chat_input("Tulis pesan...")
+
+if user_input:
+    # Simpan input ke history
+    st.session_state.messages.append({"role": "user", "content": user_input})
+    with st.chat_message("👤 Kamu"):
+        st.markdown(user_input)
+
+    # Respon dari Gemini
+    with st.chat_message("🤖 Gemini"):
+        with st.spinner("Gemini sedang mengetik..."):
+            try:
                 model = genai.GenerativeModel("gemini-2.5-flash")
                 response = model.generate_content(user_input)
-            st.subheader("💡 Jawaban dari Gemini:")
-            st.write(response.text)
-        except Exception as e:
-            st.error(f"Terjadi kesalahan: {e}")
+                reply = response.text
+            except Exception as e:
+                reply = f"❌ Terjadi kesalahan: {e}"
+            st.markdown(reply)
+            st.session_state.messages.append({"role": "gemini", "content": reply})
