@@ -21,11 +21,11 @@ def chat_bubble(role, text):
     bubble_id = str(uuid.uuid4()).replace("-", "")
     if role == "user":
         align = "flex-end"
-        bg_color = "#DCF8C6"
-        sender = "👤 Kamu"
+        bg_color = "#009dff"
+        sender = "👤 Aku"
     else:
         align = "flex-start"
-        bg_color = "#F1F0F0"
+        bg_color = "#eaeaea"
         sender = "🤖 Nirwan"
 
     st.markdown(f"""
