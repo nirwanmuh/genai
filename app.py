@@ -12,8 +12,8 @@ API_KEY = os.getenv("AIzaSyB3IiCtP8-BDL72BtPaXBSwsPwdnRZjttY")
 genai.configure(api_key=API_KEY)
 
 # Konfigurasi UI
-st.set_page_config(page_title="Gemini Chat", layout="centered")
-st.title("💬 Gemini Chatbot")
+st.set_page_config(page_title="Ngobrol Sama Nirwan", layout="centered")
+st.title("💬 Ngobrol Sama Nirwan")
 
 # Inisialisasi session state untuk menyimpan history
 if "messages" not in st.session_state:
@@ -25,7 +25,7 @@ for msg in st.session_state.messages:
         with st.chat_message("👤 Kamu"):
             st.markdown(msg["content"])
     else:
-        with st.chat_message("🤖 Gemini"):
+        with st.chat_message("🤖 Nirwan"):
             st.markdown(msg["content"])
 
 # Input pengguna
@@ -38,8 +38,8 @@ if user_input:
         st.markdown(user_input)
 
     # Respon dari Gemini
-    with st.chat_message("🤖 Gemini"):
-        with st.spinner("Gemini sedang mengetik..."):
+    with st.chat_message("🤖 Nirwan"):
+        with st.spinner("Nirwan lagi ngetik..."):
             try:
                 model = genai.GenerativeModel("gemini-2.5-flash")
                 response = model.generate_content(user_input)
