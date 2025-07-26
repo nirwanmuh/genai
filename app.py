@@ -24,7 +24,7 @@ if st.button("Kirim"):
     else:
         try:
             with st.spinner("Nirwan sedang mengetik... 🤖💭"):
-                model = genai.GenerativeModel("gemini-pro")
+                model = genai.GenerativeModel("gemini-2.5-flash")
                 response = model.generate_content(user_input)
             st.subheader("💡 Jawaban dari Gemini:")
             st.write(response.text)
