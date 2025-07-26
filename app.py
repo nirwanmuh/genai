@@ -1,5 +1,7 @@
 import streamlit as st
+from google import genai
 
+client = genai.Client()
 st.set_page_config(page_title="Text Reverser", layout="centered")
 
 st.title("🔄 Aplikasi Pembalik Teks")
@@ -13,8 +15,11 @@ if st.button("Proses"):
         st.warning("Silakan masukkan teks terlebih dahulu.")
     else:
         # Proses: balikkan teks
-        reversed_text = user_input[::-1]
+        response = client.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=user_input
+        )
 
         # Output hasil
         st.success("✅ Teks yang dibalik:")
-        st.code(reversed_text, language="text")
+        st.code(response.text)
