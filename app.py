@@ -1,6 +1,7 @@
 import streamlit as st
 from google import genai
 
+genai.configure(api_key="AIzaSyB3IiCtP8-BDL72BtPaXBSwsPwdnRZjttY")
 client = genai.Client()
 st.set_page_config(page_title="Text Reverser", layout="centered")
 
