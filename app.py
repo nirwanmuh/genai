@@ -16,35 +16,36 @@ st.set_page_config(page_title="Ngobrol Sama Nirwan", layout="centered")
 st.title("💬 Ngobrol Sama Nirwan")
 
 # Inisialisasi session state untuk menyimpan history
+# Inisialisasi session_state untuk history dan chat
+if "chat" not in st.session_state:
+    model = genai.GenerativeModel("gemini-2.5-flash")
+    st.session_state.chat = model.start_chat(history=[])
+
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# Tampilkan history percakapan
+# Tampilkan seluruh history percakapan
 for msg in st.session_state.messages:
-    if msg["role"] == "user":
-        with st.chat_message("👤 Kamu"):
-            st.markdown(msg["content"])
-    else:
-        with st.chat_message("🤖 Nirwan"):
-            st.markdown(msg["content"])
+    with st.chat_message("👤 Kamu" if msg["role"] == "user" else "🤖 Nirwan"):
+        st.markdown(msg["content"])
 
 # Input pengguna
 user_input = st.chat_input("Tulis pesan...")
 
 if user_input:
-    # Simpan input ke history
+    # Simpan dan tampilkan input pengguna
     st.session_state.messages.append({"role": "user", "content": user_input})
     with st.chat_message("👤 Kamu"):
         st.markdown(user_input)
 
-    # Respon dari Gemini
+    # Kirim ke Gemini dengan konteks (menggunakan chat instance)
     with st.chat_message("🤖 Nirwan"):
-        with st.spinner("Nirwan lagi ngetik..."):
+        with st.spinner("Bentar, lagi mikiri..."):
             try:
-                model = genai.GenerativeModel("gemini-2.5-flash")
-                response = model.generate_content(user_input)
+                response = st.session_state.chat.send_message(user_input)
                 reply = response.text
             except Exception as e:
                 reply = f"❌ Terjadi kesalahan: {e}"
-            st.markdown(reply)
-            st.session_state.messages.append({"role": "gemini", "content": reply})
+
+        st.markdown(reply)
+        st.session_state.messages.append({"role": "gemini", "content": reply})
